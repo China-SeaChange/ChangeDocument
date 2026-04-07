@@ -1,0 +1,98 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes, viewport-fit=cover">
+    <title>批量文档属性编辑器 | 支持 Excel/PPT/Word/PDF</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.2/package/dist/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+    <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <div class="card">
+        <div class="header">
+            <h1>📦 批量文档属性编辑器</h1>
+            <div class="badge-group">
+                <span class="badge">📊 Excel (.xlsx/.xlsm/.csv)</span>
+                <span class="badge">📽️ PowerPoint (.pptx/.pptm)</span>
+                <span class="badge">📘 Word (.docx/.docm)</span>
+                <span class="badge">📑 PDF (.pdf)</span>
+            </div>
+            <p>批量上传 · 统一修改元数据 · 批量添加文件名前后缀 · 打包下载 ZIP</p>
+        </div>
+        <div class="content">
+            <div id="dropZone" class="upload-area">
+                <div class="upload-icon">📂📎</div>
+                <div class="upload-text">点击或拖拽多个文档至此区域</div>
+                <div class="upload-hint">支持 .xlsx, .xlsm, .csv / .pptx, .pptm / .docx, .docm / .pdf （可多选）</div>
+                <input type="file" id="fileInput" multiple accept=".xlsx,.xlsm,.csv,.pptx,.pptm,.docx,.docm,.pdf" style="display: none;" />
+            </div>
+
+            <div class="file-list-section" id="fileListSection" style="display: none;">
+                <div class="section-title">
+                    <span>📋 待处理文件列表</span>
+                    <button id="clearAllFilesBtn" class="btn-secondary" style="padding: 4px 16px; font-size:0.75rem;">清空全部</button>
+                </div>
+                <div style="overflow-x: auto;">
+                    <table class="file-table" id="fileTable">
+                        <thead>
+                            <tr><th>文件名</th><th>类型</th><th>状态</th><th style="width:50px"></th></tr>
+                        </thead>
+                        <tbody id="fileTableBody">
+                            <tr class="empty-list"><td colspan="4">暂无文件，请上传</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="props-panel">
+                <div class="form-row">
+                    <div class="form-label">👤 统一作者</div>
+                    <div class="form-input"><input type="text" id="batchAuthor" placeholder="将应用于所有文档" /></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-label">📌 统一标题</div>
+                    <div class="form-input"><input type="text" id="batchTitle" placeholder="将应用于所有文档" /></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-label">🏷️ 统一主题</div>
+                    <div class="form-input"><input type="text" id="batchSubject" placeholder="将应用于所有文档" /></div>
+                </div>
+                <div class="form-row">
+                    <div class="form-label">🔑 统一关键词</div>
+                    <div class="form-input"><textarea id="batchKeywords" rows="2" placeholder="关键词，用逗号分隔"></textarea></div>
+                </div>
+                <div class="form-row name-prefix-row">
+                    <div class="form-label">📛 文件名前缀</div>
+                    <div class="form-input"><input type="text" id="namePrefix" placeholder="例如：修改版_" /></div>
+                </div>
+                <div class="form-row name-prefix-row">
+                    <div class="form-label">📛 文件名后缀</div>
+                    <div class="form-input"><input type="text" id="nameSuffix" placeholder="例如：_v2" /></div>
+                </div>
+                <div class="info-note" id="csvNote" style="display: none;">💡 CSV 文件将自动转换为 XLSX 格式并写入属性。</div>
+                <div class="info-note" id="macroNote" style="display: none;">⚙️ 宏文件 (.xlsm/.pptm/.docm) 属性修改不影响宏功能。</div>
+            </div>
+
+            <div id="statusMsg" class="status-area">✨ 就绪，可批量上传文档并统一修改元数据（PDF 关键词已修复）。</div>
+
+            <div class="btn-group">
+                <button id="batchProcessBtn" class="btn btn-primary" disabled>🚀 批量处理并打包下载 ZIP</button>
+                <button id="resetBtn" class="btn btn-secondary">🗑️ 重置所有</button>
+            </div>
+            <footer>
+                <span>©️ SeaChange2023</span>
+                <a href="http://www.seachange.chat" target="_blank" rel="noopener noreferrer" class="footer-link">
+                    🐙 本站已在 Github 开源
+                </a>
+            </footer>
+        </div>
+    </div>
+</div>
+<script src="script.js"></script>
+</body>
+</html>
